@@ -35,8 +35,8 @@ public class QuickSorterTest {
 
         String result = same ? "PASS" : "FAIL";
         System.out.println(result + " -> size = " + originalArray.length
-                + ", comparisons = " + sorter.getComparisonCount()
-                + ", deepest recursion = " + sorter.getDeepestRecursion());
+                + ", comparisons = " + sorter.getComparisons()
+                + ", max depth = " + sorter.getMaxDepth());
 
         if (same) {
             return 0;

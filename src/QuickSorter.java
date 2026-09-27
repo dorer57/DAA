@@ -2,30 +2,25 @@ import java.util.Random;
 
 public class QuickSorter {
 
-    private long comparisonCount;
-    private int deepestRecursion;
+    private long comparisons = 0;
+    private int maxDepth = 0;
     private Random random = new Random();
 
     public void sort(int[] array) {
-        comparisonCount = 0;
-        deepestRecursion = 0;
-
         if (array == null || array.length < 2) {
             return;
         }
-
         sortPart(array, 0, array.length - 1, 0);
     }
 
     private void sortPart(int[] array, int left, int right, int depth) {
         while (left < right) {
 
-            if (depth > deepestRecursion) {
-                deepestRecursion = depth;
+            if (depth > maxDepth) {
+                maxDepth = depth;
             }
 
             int pivotIndex = partition(array, left, right);
-
             int leftSize = pivotIndex - left;
             int rightSize = right - pivotIndex;
 
@@ -39,6 +34,12 @@ public class QuickSorter {
         }
     }
 
+    private void swap(int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
     private int partition(int[] array, int left, int right) {
         int randomIndex = left + random.nextInt(right - left + 1);
         swap(array, randomIndex, right);
@@ -47,7 +48,7 @@ public class QuickSorter {
         int boundary = left;
 
         for (int i = left; i < right; i++) {
-            comparisonCount++;
+            comparisons++;
             if (array[i] < pivotValue) {
                 swap(array, i, boundary);
                 boundary++;
@@ -58,17 +59,11 @@ public class QuickSorter {
         return boundary;
     }
 
-    private void swap(int[] array, int i, int j) {
-        int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+    public long getComparisons() {
+        return comparisons;
     }
 
-    public long getComparisonCount() {
-        return comparisonCount;
-    }
-
-    public int getDeepestRecursion() {
-        return deepestRecursion;
+    public int getMaxDepth() {
+        return maxDepth;
     }
 }
