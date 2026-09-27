@@ -1,9 +1,5 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("aofhasfkasfj");
+        System.out.println("опдплытпжып");
     }
 }
-
-
-
-
