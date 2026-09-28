@@ -4,7 +4,7 @@ public class QuickSorter {
 
     private long comparisons = 0;
     private int maxDepth = 0;
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public void sort(int[] array) {
         if (array == null || array.length < 2) {
@@ -20,16 +20,38 @@ public class QuickSorter {
                 maxDepth = depth;
             }
 
-            int pivotIndex = partition(array, left, right);
-            int leftSize = pivotIndex - left;
-            int rightSize = right - pivotIndex;
+            int pivotValue = array[left + random.nextInt(right - left + 1)];
+
+            int equalStart = left;
+            int equalEnd = right;
+            int i = left;
+
+            while (i <= equalEnd) {
+                comparisons++;
+                if (array[i] < pivotValue) {
+                    swap(array, i, equalStart);
+                    equalStart++;
+                    i++;
+                } else {
+                    comparisons++;
+                    if (array[i] > pivotValue) {
+                        swap(array, i, equalEnd);
+                        equalEnd--;
+                    } else {
+                        i++;
+                    }
+                }
+            }
+
+            int leftSize = equalStart - left;
+            int rightSize = right - equalEnd;
 
             if (leftSize < rightSize) {
-                sortPart(array, left, pivotIndex - 1, depth + 1);
-                left = pivotIndex + 1;
+                sortPart(array, left, equalStart - 1, depth + 1);
+                left = equalEnd + 1;
             } else {
-                sortPart(array, pivotIndex + 1, right, depth + 1);
-                right = pivotIndex - 1;
+                sortPart(array, equalEnd + 1, right, depth + 1);
+                right = equalStart - 1;
             }
         }
     }
@@ -38,25 +60,6 @@ public class QuickSorter {
         int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
-    }
-
-    private int partition(int[] array, int left, int right) {
-        int randomIndex = left + random.nextInt(right - left + 1);
-        swap(array, randomIndex, right);
-
-        int pivotValue = array[right];
-        int boundary = left;
-
-        for (int i = left; i < right; i++) {
-            comparisons++;
-            if (array[i] < pivotValue) {
-                swap(array, i, boundary);
-                boundary++;
-            }
-        }
-
-        swap(array, boundary, right);
-        return boundary;
     }
 
     public long getComparisons() {

@@ -12,8 +12,9 @@ public class QuickSorterTest {
         failedTests += checkOneCase(new int[]{1, 2, 3, 4, 5});
         failedTests += checkOneCase(new int[]{5, 4, 3, 2, 1});
         failedTests += checkOneCase(new int[]{2, 2, 2, 2, 2});
-        failedTests += checkOneCase(makeRandomArray(1000));
-        failedTests += checkOneCase(makeRandomArray(50000));
+        failedTests += checkOneCase(makeRandomArray(1000, 1000000));
+        failedTests += checkOneCase(makeRandomArray(50000, 1000000));
+        failedTests += checkOneCase(makeRandomArray(100000, 10));
 
         if (failedTests == 0) {
             System.out.println("All tests passed!");
@@ -45,11 +46,11 @@ public class QuickSorterTest {
         }
     }
 
-    private static int[] makeRandomArray(int size) {
+    private static int[] makeRandomArray(int size, int maxValue) {
         Random random = new Random(42);
         int[] array = new int[size];
         for (int i = 0; i < size; i++) {
-            array[i] = random.nextInt(1000000);
+            array[i] = random.nextInt(maxValue);
         }
         return array;
     }
