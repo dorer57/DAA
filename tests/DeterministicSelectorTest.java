@@ -11,9 +11,11 @@ public class DeterministicSelectorTest {
 
         for (int test = 0; test < totalTests; test++) {
             int size = 1 + random.nextInt(500);
+            int maxValue = (test % 2 == 0) ? 1000 : 5;
+
             int[] array = new int[size];
             for (int i = 0; i < size; i++) {
-                array[i] = random.nextInt(1000);
+                array[i] = random.nextInt(maxValue);
             }
 
             int k = random.nextInt(size);

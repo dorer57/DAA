@@ -21,14 +21,16 @@ public class DeterministicSelector {
         }
 
         int pivotValue = findMedianOfMedians(array, left, right, depth);
-        int pivotIndex = partition(array, left, right, pivotValue);
+        int[] equalRange = partition(array, left, right, pivotValue);
+        int equalStart = equalRange[0];
+        int equalEnd = equalRange[1];
 
-        if (k == pivotIndex) {
-            return array[pivotIndex];
-        } else if (k < pivotIndex) {
-            return selectPart(array, left, pivotIndex - 1, k, depth + 1);
+        if (k < equalStart) {
+            return selectPart(array, left, equalStart - 1, k, depth + 1);
+        } else if (k > equalEnd) {
+            return selectPart(array, equalEnd + 1, right, k, depth + 1);
         } else {
-            return selectPart(array, pivotIndex + 1, right, k, depth + 1);
+            return pivotValue;
         }
     }
 
@@ -72,27 +74,29 @@ public class DeterministicSelector {
         }
     }
 
-    private int partition(int[] array, int left, int right, int pivotValue) {
-        int pivotIndex = left;
-        for (int i = left; i <= right; i++) {
-            if (array[i] == pivotValue) {
-                pivotIndex = i;
-                break;
-            }
-        }
-        swap(array, pivotIndex, right);
+    private int[] partition(int[] array, int left, int right, int pivotValue) {
+        int equalStart = left;
+        int equalEnd = right;
+        int i = left;
 
-        int boundary = left;
-        for (int i = left; i < right; i++) {
+        while (i <= equalEnd) {
             comparisonsMade++;
             if (array[i] < pivotValue) {
-                swap(array, i, boundary);
-                boundary++;
+                swap(array, i, equalStart);
+                equalStart++;
+                i++;
+            } else {
+                comparisonsMade++;
+                if (array[i] > pivotValue) {
+                    swap(array, i, equalEnd);
+                    equalEnd--;
+                } else {
+                    i++;
+                }
             }
         }
 
-        swap(array, boundary, right);
-        return boundary;
+        return new int[]{equalStart, equalEnd};
     }
 
     private void swap(int[] array, int i, int j) {
